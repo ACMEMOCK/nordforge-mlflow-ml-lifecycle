@@ -1,0 +1,90 @@
+[
+  {
+    "artifact_location": "mlflow-artifacts:/nordforge/nf_late_delivery_risk",
+    "experiment_name": "/NordForge/IndustrialML/nf_late_delivery_risk",
+    "model_id": "nf_late_delivery_risk",
+    "owner_team": "Logistics Analytics",
+    "tags": {
+      "nordforge.criticality": "high",
+      "nordforge.domain": "accu1932_order_fulfillment,acda7982_logistics_analytics,acsa2637_freight_transportation",
+      "nordforge.status": "candidate"
+    }
+  },
+  {
+    "artifact_location": "mlflow-artifacts:/nordforge/nf_customer_promise_risk",
+    "experiment_name": "/NordForge/IndustrialML/nf_customer_promise_risk",
+    "model_id": "nf_customer_promise_risk",
+    "owner_team": "Customer Availability Desk",
+    "tags": {
+      "nordforge.criticality": "high",
+      "nordforge.domain": "accu1533_customer_availability,accu1932_order_fulfillment",
+      "nordforge.status": "candidate"
+    }
+  },
+  {
+    "artifact_location": "mlflow-artifacts:/nordforge/nf_inventory_aging_risk",
+    "experiment_name": "/NordForge/IndustrialML/nf_inventory_aging_risk",
+    "model_id": "nf_inventory_aging_risk",
+    "owner_team": "Industrial Inventory Control",
+    "tags": {
+      "nordforge.criticality": "medium",
+      "nordforge.domain": "acda4413_inventory_movements,accu1533_customer_availability",
+      "nordforge.status": "candidate"
+    }
+  },
+  {
+    "artifact_location": "mlflow-artifacts:/nordforge/nf_scrap_loss_propensity",
+    "experiment_name": "/NordForge/IndustrialML/nf_scrap_loss_propensity",
+    "model_id": "nf_scrap_loss_propensity",
+    "owner_team": "Industrial Inventory Control",
+    "tags": {
+      "nordforge.criticality": "medium",
+      "nordforge.domain": "acda4413_inventory_movements",
+      "nordforge.status": "candidate"
+    }
+  },
+  {
+    "artifact_location": "mlflow-artifacts:/nordforge/nf_demand_forecast_segment",
+    "experiment_name": "/NordForge/IndustrialML/nf_demand_forecast_segment",
+    "model_id": "nf_demand_forecast_segment",
+    "owner_team": "Commercial Operations",
+    "tags": {
+      "nordforge.criticality": "medium",
+      "nordforge.domain": "accu1932_order_fulfillment,acsa2026_contract_customer,accu1533_customer_availability",
+      "nordforge.status": "candidate"
+    }
+  },
+  {
+    "artifact_location": "mlflow-artifacts:/nordforge/nf_freight_cost_variance_detector",
+    "experiment_name": "/NordForge/IndustrialML/nf_freight_cost_variance_detector",
+    "model_id": "nf_freight_cost_variance_detector",
+    "owner_team": "Freight Audit and Transportation",
+    "tags": {
+      "nordforge.criticality": "medium",
+      "nordforge.domain": "acsa2637_freight_transportation,acda7982_logistics_analytics",
+      "nordforge.status": "candidate"
+    }
+  },
+  {
+    "artifact_location": "mlflow-artifacts:/nordforge/nf_supplier_risk_score",
+    "experiment_name": "/NordForge/IndustrialML/nf_supplier_risk_score",
+    "model_id": "nf_supplier_risk_score",
+    "owner_team": "Procurement Analytics",
+    "tags": {
+      "nordforge.criticality": "medium",
+      "nordforge.domain": "supplier delivery history,quality defect claims,purchase order schedule lines",
+      "nordforge.status": "data_gap"
+    }
+  },
+  {
+    "artifact_location": "mlflow-artifacts:/nordforge/nf_energy_anomaly_detection",
+    "experiment_name": "/NordForge/IndustrialML/nf_energy_anomaly_detection",
+    "model_id": "nf_energy_anomaly_detection",
+    "owner_team": "Sustainability Analytics",
+    "tags": {
+      "nordforge.criticality": "medium",
+      "nordforge.domain": "plant energy meter telemetry,production line schedules,weather-normalization feed",
+      "nordforge.status": "data_gap"
+    }
+  }
+]

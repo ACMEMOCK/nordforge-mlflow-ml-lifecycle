@@ -1,0 +1,31 @@
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v3.5.0
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:////mlflow/mlflow.db
+      --default-artifact-root /mlflow/mlartifacts
+      --allowed-hosts localhost,127.0.0.1,mlflow
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlruns:/mlflow/mlruns
+      - ./mlartifacts:/mlflow/mlartifacts
+      - ./mlflow.db:/mlflow/mlflow.db
+
+  ml-runner:
+    image: python:3.12-slim
+    working_dir: /repo
+    volumes:
+      - ./:/repo
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+    command: >
+      sh -c "pip install -r requirements.txt &&
+             python scripts/generate_ml_assets.py &&
+             python scripts/validate_ml_assets.py &&
+             python pipelines/train_model.py --model-id nf_late_delivery_risk --dry-run"
+    profiles:
+      - runner

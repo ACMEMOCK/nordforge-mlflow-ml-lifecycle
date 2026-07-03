@@ -1,0 +1,76 @@
+{
+  "dry_run": true,
+  "generated_at": "2026-07-03T20:17:51.563381+00:00",
+  "logged_to_mlflow": false,
+  "metrics": {
+    "f1_score": 0.6498,
+    "precision": 0.6707,
+    "roc_auc": 0.7816,
+    "sample_rows": 12
+  },
+  "model_id": "nf_late_delivery_risk",
+  "predictions": [
+    {
+      "entity_id": "nf_late_delivery_risk-sample-001",
+      "prediction": 0,
+      "score": 0.473928
+    },
+    {
+      "entity_id": "nf_late_delivery_risk-sample-002",
+      "prediction": 0,
+      "score": 0.106748
+    },
+    {
+      "entity_id": "nf_late_delivery_risk-sample-003",
+      "prediction": 0,
+      "score": 0.40883
+    },
+    {
+      "entity_id": "nf_late_delivery_risk-sample-004",
+      "prediction": 0,
+      "score": 0.417842
+    },
+    {
+      "entity_id": "nf_late_delivery_risk-sample-005",
+      "prediction": 1,
+      "score": 0.731427
+    },
+    {
+      "entity_id": "nf_late_delivery_risk-sample-006",
+      "prediction": 0,
+      "score": 0.241766
+    },
+    {
+      "entity_id": "nf_late_delivery_risk-sample-007",
+      "prediction": 0,
+      "score": 0.012068
+    },
+    {
+      "entity_id": "nf_late_delivery_risk-sample-008",
+      "prediction": 1,
+      "score": 0.648302
+    },
+    {
+      "entity_id": "nf_late_delivery_risk-sample-009",
+      "prediction": 1,
+      "score": 0.595122
+    },
+    {
+      "entity_id": "nf_late_delivery_risk-sample-010",
+      "prediction": 0,
+      "score": 0.326129
+    },
+    {
+      "entity_id": "nf_late_delivery_risk-sample-011",
+      "prediction": 1,
+      "score": 0.654602
+    },
+    {
+      "entity_id": "nf_late_delivery_risk-sample-012",
+      "prediction": 1,
+      "score": 0.82562
+    }
+  ],
+  "task_type": "binary_classification",
+  "tracking_uri": "http://localhost:5000"
+}

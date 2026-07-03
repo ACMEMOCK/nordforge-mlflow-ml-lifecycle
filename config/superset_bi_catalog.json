@@ -1,0 +1,322 @@
+{
+  "catalog_version": "2026.06.26",
+  "company": "NordForge Industrial Group",
+  "purpose": "Superset BI catalog for executive, production, quality, maintenance, logistics, finance, procurement, sustainability, and data platform dashboards.",
+  "upstream_orchestration_repo": "nordforge-airflow-orchestration",
+  "database_connections": [
+    {
+      "database_name": "NordForge Analytics Warehouse",
+      "sqlalchemy_uri": "postgresql+psycopg2://nordforge_bi:nordforge_bi@warehouse-db:5432/nordforge_analytics",
+      "expose_in_sqllab": true,
+      "allow_ctas": false,
+      "allow_cvas": false,
+      "allow_dml": false
+    }
+  ],
+  "datasets": [
+    {
+      "dataset_id": "mart_exec.executive_scorecard_daily",
+      "schema": "mart_exec",
+      "table": "executive_scorecard_daily",
+      "owner_team": "Enterprise Analytics",
+      "grain": "One row per date, business area, and executive metric.",
+      "time_column": "scorecard_date",
+      "certification": "gold",
+      "metrics": [
+        {"name": "Metric Value", "sql": "SUM(metric_value)", "format": ",.2f"},
+        {"name": "Target Value", "sql": "SUM(target_value)", "format": ",.2f"},
+        {"name": "Variance To Target", "sql": "SUM(metric_value) - SUM(target_value)", "format": ",.2f"},
+        {"name": "Metric Count", "sql": "COUNT(*)", "format": ",d"}
+      ],
+      "dimensions": ["business_area", "metric_name", "metric_unit", "status", "owner_team"]
+    },
+    {
+      "dataset_id": "mart_exec.v_domain_health_current",
+      "schema": "mart_exec",
+      "table": "v_domain_health_current",
+      "owner_team": "Data Platform",
+      "grain": "One row per upstream data product in the latest Airflow validation run.",
+      "time_column": null,
+      "certification": "gold",
+      "metrics": [
+        {"name": "Contracted Rows", "sql": "SUM(detail_rows_preserved)", "format": ",d"},
+        {"name": "Table Count", "sql": "SUM(table_count)", "format": ",d"},
+        {"name": "Retry Candidates", "sql": "SUM(retry_candidates)", "format": ",d"},
+        {"name": "Avg Duration Seconds", "sql": "AVG(duration_seconds)", "format": ",.1f"}
+      ],
+      "dimensions": ["domain", "pipeline_group", "owner_team", "validation_status", "freshness_status", "bi_readiness_status"]
+    },
+    {
+      "dataset_id": "mart_customer.customer_promise_daily",
+      "schema": "mart_customer",
+      "table": "customer_promise_daily",
+      "owner_team": "Customer Availability Desk",
+      "grain": "One row per snapshot date, allocation segment, and availability status.",
+      "time_column": "snapshot_date",
+      "certification": "gold",
+      "metrics": [
+        {"name": "ATP Quantity", "sql": "SUM(total_atp_qty)", "format": ",.0f"},
+        {"name": "Blocked Stock Quantity", "sql": "SUM(blocked_stock_qty)", "format": ",.0f"},
+        {"name": "Zero ATP Rows", "sql": "SUM(zero_atp_rows)", "format": ",d"},
+        {"name": "Rows Count", "sql": "SUM(rows_count)", "format": ",d"}
+      ],
+      "dimensions": ["allocation_segment", "availability_status", "promise_risk_rating", "service_queue"]
+    },
+    {
+      "dataset_id": "mart_supply.inventory_health_daily",
+      "schema": "mart_supply",
+      "table": "inventory_health_daily",
+      "owner_team": "Industrial Inventory Control",
+      "grain": "One row per date, warehouse, and SKU family.",
+      "time_column": "snapshot_date",
+      "certification": "gold",
+      "metrics": [
+        {"name": "Movement Rows", "sql": "SUM(movement_rows)", "format": ",d"},
+        {"name": "Production Consumption Rows", "sql": "SUM(production_consumption_rows)", "format": ",d"},
+        {"name": "Scrap Loss Rows", "sql": "SUM(scrap_loss_rows)", "format": ",d"},
+        {"name": "Aging Risk Lots", "sql": "SUM(aging_risk_lots)", "format": ",d"},
+        {"name": "Inventory Value Impact USD", "sql": "SUM(inventory_value_impact_usd)", "format": "$,.0f"}
+      ],
+      "dimensions": ["warehouse_code", "sku_family", "health_status"]
+    },
+    {
+      "dataset_id": "mart_logistics.otif_daily",
+      "schema": "mart_logistics",
+      "table": "otif_daily",
+      "owner_team": "Logistics Analytics",
+      "grain": "One row per delivery date, distribution center, and transport mode.",
+      "time_column": "delivery_date",
+      "certification": "gold",
+      "metrics": [
+        {"name": "Delivery Rows", "sql": "SUM(delivery_rows)", "format": ",d"},
+        {"name": "OTIF Percent", "sql": "AVG(otif_pct)", "format": ".1%"},
+        {"name": "Late Rows", "sql": "SUM(late_rows)", "format": ",d"},
+        {"name": "Partial Rows", "sql": "SUM(partial_rows)", "format": ",d"},
+        {"name": "Exception Rows", "sql": "SUM(exception_rows)", "format": ",d"},
+        {"name": "Recovery Actions", "sql": "SUM(recovery_actions)", "format": ",d"}
+      ],
+      "dimensions": ["distribution_center", "transport_mode", "carrier_sla_status"]
+    },
+    {
+      "dataset_id": "mart_finance.freight_cost_monthly",
+      "schema": "mart_finance",
+      "table": "freight_cost_monthly",
+      "owner_team": "Transportation Finance",
+      "grain": "One row per month, route, and transport mode.",
+      "time_column": "month_start",
+      "certification": "gold",
+      "metrics": [
+        {"name": "Freight Cost USD", "sql": "SUM(freight_cost_usd)", "format": "$,.0f"},
+        {"name": "Fuel Surcharge USD", "sql": "SUM(fuel_surcharge_usd)", "format": "$,.0f"},
+        {"name": "Accessorial Estimate USD", "sql": "SUM(accessorial_estimate_usd)", "format": "$,.0f"},
+        {"name": "Audit Findings", "sql": "SUM(audit_findings)", "format": ",d"}
+      ],
+      "dimensions": ["route_id", "transport_mode", "cost_status"]
+    },
+    {
+      "dataset_id": "mart_commercial.contract_pricing_health",
+      "schema": "mart_commercial",
+      "table": "contract_pricing_health",
+      "owner_team": "Sales Operations",
+      "grain": "One row per snapshot date, sales organization, and country.",
+      "time_column": "snapshot_date",
+      "certification": "gold",
+      "metrics": [
+        {"name": "Active Contract Rows", "sql": "SUM(active_contract_rows)", "format": ",d"},
+        {"name": "Expired Contract Rows", "sql": "SUM(expired_contract_rows)", "format": ",d"},
+        {"name": "High Discount Rows", "sql": "SUM(high_discount_rows)", "format": ",d"},
+        {"name": "Audit Findings", "sql": "SUM(audit_findings)", "format": ",d"},
+        {"name": "Net Net Price USD", "sql": "SUM(net_net_price_usd)", "format": "$,.0f"}
+      ],
+      "dimensions": ["sales_org", "country_code", "pricing_status"]
+    },
+    {
+      "dataset_id": "mart_production.production_cell_daily",
+      "schema": "mart_production",
+      "table": "production_cell_daily",
+      "owner_team": "Manufacturing Operations",
+      "grain": "One row per production date, plant, and production cell.",
+      "time_column": "production_date",
+      "certification": "silver",
+      "metrics": [
+        {"name": "Planned Units", "sql": "SUM(planned_units)", "format": ",d"},
+        {"name": "Completed Units", "sql": "SUM(completed_units)", "format": ",d"},
+        {"name": "Schedule Attainment", "sql": "AVG(schedule_attainment_pct)", "format": ".1%"},
+        {"name": "Scrap Units", "sql": "SUM(scrap_units)", "format": ",d"}
+      ],
+      "dimensions": ["plant_code", "production_cell", "constraint_reason"]
+    },
+    {
+      "dataset_id": "mart_quality.quality_event_daily",
+      "schema": "mart_quality",
+      "table": "quality_event_daily",
+      "owner_team": "Quality Assurance",
+      "grain": "One row per event date, plant, and quality domain.",
+      "time_column": "event_date",
+      "certification": "silver",
+      "metrics": [
+        {"name": "Inspection Lots", "sql": "SUM(inspection_lots)", "format": ",d"},
+        {"name": "Blocked Lots", "sql": "SUM(blocked_lots)", "format": ",d"},
+        {"name": "Avg Release Cycle Hours", "sql": "AVG(release_cycle_hours)", "format": ",.1f"},
+        {"name": "Customer Escapes", "sql": "SUM(customer_escape_count)", "format": ",d"}
+      ],
+      "dimensions": ["plant_code", "quality_domain", "severity_status"]
+    },
+    {
+      "dataset_id": "mart_maintenance.maintenance_work_order_daily",
+      "schema": "mart_maintenance",
+      "table": "maintenance_work_order_daily",
+      "owner_team": "Maintenance Reliability",
+      "grain": "One row per work date, plant, and asset area.",
+      "time_column": "work_date",
+      "certification": "silver",
+      "metrics": [
+        {"name": "Open Work Orders", "sql": "SUM(open_work_orders)", "format": ",d"},
+        {"name": "Overdue Work Orders", "sql": "SUM(overdue_work_orders)", "format": ",d"},
+        {"name": "PM Compliance", "sql": "AVG(pm_compliance_pct)", "format": ".1%"},
+        {"name": "Unplanned Downtime Hours", "sql": "SUM(unplanned_downtime_hours)", "format": ",.1f"}
+      ],
+      "dimensions": ["plant_code", "asset_area", "maintenance_status"]
+    },
+    {
+      "dataset_id": "mart_sustainability.freight_emissions_monthly",
+      "schema": "mart_sustainability",
+      "table": "freight_emissions_monthly",
+      "owner_team": "Sustainability and Transportation Finance",
+      "grain": "One row per month, route, and transport mode.",
+      "time_column": "month_start",
+      "certification": "gold",
+      "metrics": [
+        {"name": "Shipment Count", "sql": "SUM(shipment_count)", "format": ",d"},
+        {"name": "Freight Cost USD", "sql": "SUM(freight_cost_usd)", "format": "$,.0f"},
+        {"name": "CO2e KG", "sql": "SUM(co2e_kg)", "format": ",.0f"},
+        {"name": "CO2e Per Tonne KM", "sql": "AVG(co2e_per_tonne_km)", "format": ",.3f"}
+      ],
+      "dimensions": ["route_id", "transport_mode", "sustainability_status"]
+    }
+  ],
+  "dashboards": [
+    {
+      "dashboard_slug": "executive-operations-cockpit",
+      "title": "Executive Operations Cockpit",
+      "owner_team": "Enterprise Analytics",
+      "business_owner": "COO Staff",
+      "refresh_cadence": "Daily after Airflow ERP orchestration completes",
+      "audience": ["Executives", "Plant leadership", "Data platform leads"],
+      "datasets": ["mart_exec.executive_scorecard_daily", "mart_exec.v_domain_health_current"],
+      "charts": [
+        {"title": "Domain Readiness By Pipeline Group", "dataset": "mart_exec.v_domain_health_current", "chart_type": "table"},
+        {"title": "Executive KPI Status", "dataset": "mart_exec.executive_scorecard_daily", "chart_type": "big_number_total"},
+        {"title": "Rows Governed By Domain", "dataset": "mart_exec.v_domain_health_current", "chart_type": "bar"}
+      ]
+    },
+    {
+      "dashboard_slug": "customer-promise-atp-control",
+      "title": "Customer Promise and ATP Control",
+      "owner_team": "Customer Availability Desk",
+      "business_owner": "Customer Service Operations",
+      "refresh_cadence": "Daily with optional intraday refresh",
+      "audience": ["Customer service managers", "Allocation desk", "Sales operations"],
+      "datasets": ["mart_customer.customer_promise_daily", "mart_exec.v_domain_health_current"],
+      "charts": [
+        {"title": "ATP Quantity By Allocation Segment", "dataset": "mart_customer.customer_promise_daily", "chart_type": "bar"},
+        {"title": "Blocked Stock By Promise Risk", "dataset": "mart_customer.customer_promise_daily", "chart_type": "treemap"},
+        {"title": "Zero ATP Rows", "dataset": "mart_customer.customer_promise_daily", "chart_type": "big_number_total"}
+      ]
+    },
+    {
+      "dashboard_slug": "inventory-production-health",
+      "title": "Inventory and Production Health",
+      "owner_team": "Industrial Inventory Control",
+      "business_owner": "Manufacturing Operations",
+      "refresh_cadence": "Daily after inventory movement package validation",
+      "audience": ["Inventory control", "Production managers", "Warehouse leads"],
+      "datasets": ["mart_supply.inventory_health_daily", "mart_production.production_cell_daily"],
+      "charts": [
+        {"title": "Inventory Value Impact By Warehouse", "dataset": "mart_supply.inventory_health_daily", "chart_type": "bar"},
+        {"title": "Scrap Loss Rows By SKU Family", "dataset": "mart_supply.inventory_health_daily", "chart_type": "bar"},
+        {"title": "Schedule Attainment By Production Cell", "dataset": "mart_production.production_cell_daily", "chart_type": "line"}
+      ]
+    },
+    {
+      "dashboard_slug": "quality-maintenance-control-tower",
+      "title": "Quality and Maintenance Control Tower",
+      "owner_team": "Quality Assurance",
+      "business_owner": "Plant Reliability Council",
+      "refresh_cadence": "Daily",
+      "audience": ["Quality leaders", "Maintenance supervisors", "Plant managers"],
+      "datasets": ["mart_quality.quality_event_daily", "mart_maintenance.maintenance_work_order_daily"],
+      "charts": [
+        {"title": "Blocked Lots By Quality Domain", "dataset": "mart_quality.quality_event_daily", "chart_type": "bar"},
+        {"title": "Release Cycle Hours", "dataset": "mart_quality.quality_event_daily", "chart_type": "line"},
+        {"title": "Overdue Work Orders By Asset Area", "dataset": "mart_maintenance.maintenance_work_order_daily", "chart_type": "bar"},
+        {"title": "PM Compliance", "dataset": "mart_maintenance.maintenance_work_order_daily", "chart_type": "big_number"}
+      ]
+    },
+    {
+      "dashboard_slug": "logistics-otif-carrier-performance",
+      "title": "Logistics OTIF and Carrier Performance",
+      "owner_team": "Logistics Analytics",
+      "business_owner": "Logistics Operations",
+      "refresh_cadence": "Daily after delivery event processing",
+      "audience": ["Logistics directors", "DC managers", "Carrier managers"],
+      "datasets": ["mart_logistics.otif_daily"],
+      "charts": [
+        {"title": "OTIF Percent By DC And Mode", "dataset": "mart_logistics.otif_daily", "chart_type": "bar"},
+        {"title": "Exception Rows By Distribution Center", "dataset": "mart_logistics.otif_daily", "chart_type": "bar"},
+        {"title": "Recovery Actions", "dataset": "mart_logistics.otif_daily", "chart_type": "big_number_total"}
+      ]
+    },
+    {
+      "dashboard_slug": "freight-cost-sustainability",
+      "title": "Freight Cost and Sustainability",
+      "owner_team": "Transportation Finance",
+      "business_owner": "Finance and Sustainability Council",
+      "refresh_cadence": "Monthly plus weekly estimates",
+      "audience": ["Finance", "Transportation", "Sustainability"],
+      "datasets": ["mart_finance.freight_cost_monthly", "mart_sustainability.freight_emissions_monthly"],
+      "charts": [
+        {"title": "Freight Cost By Route And Mode", "dataset": "mart_finance.freight_cost_monthly", "chart_type": "bar"},
+        {"title": "Audit Findings By Route", "dataset": "mart_finance.freight_cost_monthly", "chart_type": "table"},
+        {"title": "CO2e By Transport Mode", "dataset": "mart_sustainability.freight_emissions_monthly", "chart_type": "bar"},
+        {"title": "CO2e Per Tonne KM", "dataset": "mart_sustainability.freight_emissions_monthly", "chart_type": "line"}
+      ]
+    },
+    {
+      "dashboard_slug": "commercial-controls-pricing",
+      "title": "Commercial Controls and Pricing",
+      "owner_team": "Sales Operations",
+      "business_owner": "Commercial Finance",
+      "refresh_cadence": "Daily after pricing package validation",
+      "audience": ["Sales operations", "Commercial finance", "Regional sales leaders"],
+      "datasets": ["mart_commercial.contract_pricing_health"],
+      "charts": [
+        {"title": "High Discount Rows By Country", "dataset": "mart_commercial.contract_pricing_health", "chart_type": "bar"},
+        {"title": "Expired Contract Rows", "dataset": "mart_commercial.contract_pricing_health", "chart_type": "big_number_total"},
+        {"title": "Net Net Price By Sales Org", "dataset": "mart_commercial.contract_pricing_health", "chart_type": "bar"}
+      ]
+    },
+    {
+      "dashboard_slug": "data-quality-pipeline-reliability",
+      "title": "Data Quality and Pipeline Reliability",
+      "owner_team": "Data Platform",
+      "business_owner": "Data Governance Council",
+      "refresh_cadence": "Every Airflow run",
+      "audience": ["Data platform", "Analytics engineering", "Operations owners"],
+      "datasets": ["mart_exec.v_domain_health_current"],
+      "charts": [
+        {"title": "Validation Status By Domain", "dataset": "mart_exec.v_domain_health_current", "chart_type": "table"},
+        {"title": "Pipeline Duration By Package", "dataset": "mart_exec.v_domain_health_current", "chart_type": "bar"},
+        {"title": "Retry Candidates", "dataset": "mart_exec.v_domain_health_current", "chart_type": "big_number_total"}
+      ]
+    }
+  ],
+  "roles": [
+    {"role_name": "NordForge Executive Viewer", "dashboards": ["executive-operations-cockpit", "freight-cost-sustainability"]},
+    {"role_name": "NordForge Operations Viewer", "dashboards": ["inventory-production-health", "quality-maintenance-control-tower", "logistics-otif-carrier-performance"]},
+    {"role_name": "NordForge Customer Promise Viewer", "dashboards": ["customer-promise-atp-control"]},
+    {"role_name": "NordForge Finance Viewer", "dashboards": ["freight-cost-sustainability", "commercial-controls-pricing"]},
+    {"role_name": "NordForge Data Platform Admin", "dashboards": ["data-quality-pipeline-reliability", "executive-operations-cockpit"]}
+  ]
+}
+
