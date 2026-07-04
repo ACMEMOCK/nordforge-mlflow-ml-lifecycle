@@ -46,3 +46,12 @@ Candidate model promotion requires evidence from four areas:
 - The domain owner confirms the business decision can safely use the model output.
 
 Promotion requests should include the MLflow run artifact, model card link, observed metrics, rollback owner, and monitoring plan. Models must remain at candidate status until all required reviewers approve the promotion issue.
+
+## Data Gap Roadmap
+
+Two models remain intentionally blocked until new source packages exist:
+
+- `nf_supplier_risk_score`: requires supplier delivery history, purchase order schedule lines, supplier quality claims, and supplier master enrichment.
+- `nf_energy_anomaly_detection`: requires plant energy meter telemetry, production-line runtime, production volume, and weather-normalization data.
+
+These models should stay in `data_gap` status until source contracts are approved, Great Expectations checks are defined, and ownership is assigned in OpenMetadata.
