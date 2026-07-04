@@ -53,6 +53,20 @@ def main() -> int:
     rows = load_sample_rows(REPO_ROOT / args.sample_data, args.model_id)
     result = run_baseline(model, rows)
     result["generated_at"] = datetime.now(timezone.utc).isoformat()
+    result["metric_gates"] = model.get("metric_gates", {})
+    result["gate_results"] = {
+        metric: {
+            "observed": result["metrics"].get(metric),
+            "required": required,
+            "passed": (
+                result["metrics"].get(metric) <= required
+                if metric in {"wmape", "bias", "calibration_error"}
+                else result["metrics"].get(metric, 0) >= required
+            ),
+        }
+        for metric, required in model.get("metric_gates", {}).items()
+        if metric in result["metrics"]
+    }
     result["dry_run"] = bool(args.dry_run)
     result["tracking_uri"] = os.environ.get("MLFLOW_TRACKING_URI", "http://localhost:5000")
 
