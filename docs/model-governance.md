@@ -35,3 +35,14 @@ Every production model should have:
 - Business KPI backtesting
 - Owner notification path
 - Retirement criteria
+
+## Candidate Promotion Workflow
+
+Candidate model promotion requires evidence from four areas:
+
+- Data Science confirms the experiment run, metric gates, and model card.
+- Data Platform confirms Airflow and MLflow run reproducibility.
+- Data Governance confirms source lineage and ownership.
+- The domain owner confirms the business decision can safely use the model output.
+
+Promotion requests should include the MLflow run artifact, model card link, observed metrics, rollback owner, and monitoring plan. Models must remain at candidate status until all required reviewers approve the promotion issue.
