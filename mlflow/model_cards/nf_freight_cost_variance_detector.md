@@ -40,6 +40,19 @@ Detect freight invoices and lanes with abnormal cost variance before accrual clo
 - Freight Cost and Audit
 - Route Cost Scorecard
 
+## Monitoring Plan
+
+Initial monitoring should track:
+
+- Prediction volume by carrier and lane family
+- Average predicted variance risk by carrier
+- Cost-per-ton-km distribution drift
+- Fuel surcharge percentage drift
+- Route distance and chargeable weight distribution drift
+- Share of invoices routed to audit review
+
+Warning thresholds should be reviewed monthly by Freight Audit and Transportation. Critical thresholds should block promotion until historical production runs are available.
+
 ## Approval Notes
 
 Candidate models require data-quality validation, model card approval, registry review, and monitoring readiness before production use.
